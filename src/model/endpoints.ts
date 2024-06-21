@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080'
+const BASE_URL = 'http://ec2-18-218-159-27.us-east-2.compute.amazonaws.com:8080'
 export const fetchUrl = (id : string) => `${BASE_URL}/lobby/${id}`
 export const POST_MESSAGE_URL = BASE_URL + "/postMessage"
 export const lobbyExistsUrl = (id : string) => `${BASE_URL}/lobbyExists/${id}`
