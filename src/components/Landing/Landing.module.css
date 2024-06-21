@@ -1,0 +1,57 @@
+.container {
+    display: flex; 
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%; 
+    width: 100%; 
+    margin: 0;
+    font-size: larger;
+}
+
+.joinParent {
+    display: flex; 
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.container input {
+    font-family: inherit;
+    height: 1.5em; 
+    font-size: inherit;
+    text-align: center;
+}
+
+.container p {
+    color: white; 
+    font-weight: bold;
+    user-select: none;
+}
+
+.container p:hover {
+    cursor: pointer; 
+    animation: wiggle 0.5s infinite; 
+}
+
+.container p:active {
+    transform: scale(0.97);
+    animation: none; 
+}
+
+.container small {
+    user-select: none;
+    color: grey; 
+}
+
+@keyframes wiggle {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-3deg);
+    }
+    75% {
+        transform: rotate(3deg);
+    }
+}

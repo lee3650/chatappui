@@ -1,0 +1,7 @@
+.spinnerParent {
+    display: flex;
+    height: 75vh;
+    overflow: hidden; 
+    justify-content: center;
+    align-items: center;
+}
