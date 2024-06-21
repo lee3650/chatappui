@@ -7,7 +7,6 @@ import MessageBox from "./MessageBox";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 const INTERVAL = 500; 
-const TYPING_INTERVAL = 500; 
 
 const ChatPage : FC<ChatPageProps> = ( props ) => {
     const typers = props.lobbyState.senders.map(v => v.isTyping && v.name !== props.username ? v.name : null).filter(v => v !== null); 
@@ -19,28 +18,27 @@ const ChatPage : FC<ChatPageProps> = ( props ) => {
             props.refreshData(); 
         }, INTERVAL); 
 
-        const updateTyping = setInterval(() => {
-            props.updateTyping(message.length > 0); 
-        }, TYPING_INTERVAL); 
-
-        return () => { clearInterval(interval); clearInterval(updateTyping)}; 
+        return () => { clearInterval(interval); }; 
     }, [])
 
     const sendMessage = () => {
         if (message.length > 0)
         {
+            props.updateTyping(false); 
             props.sendMessage(message);
             setMessage('');
         }
     }
 
     const messageChanged = (msg : string) => {
-        if (msg === '') {
+        if (msg.length === 0) {
             // then we send a 'not typing' message
+            props.updateTyping(false); 
         }
         else {
-            // send a 'is typing' message if the message is only one character I think... 
-            // hm... maybe we should just do polling for this? 
+            if (message.length === 0) {
+                props.updateTyping(true); 
+            }
         }
         setMessage(msg); 
     }
