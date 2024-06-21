@@ -1,4 +1,4 @@
-const BASE_URL = 'https://ec2-18-218-159-27.us-east-2.compute.amazonaws.com:8443'
+const BASE_URL = 'https://daily-planners.com'
 export const fetchUrl = (id : string) => `${BASE_URL}/lobby/${id}`
 export const POST_MESSAGE_URL = BASE_URL + "/postMessage"
 export const lobbyExistsUrl = (id : string) => `${BASE_URL}/lobbyExists/${id}`
