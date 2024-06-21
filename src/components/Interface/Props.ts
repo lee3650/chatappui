@@ -14,7 +14,7 @@ export class EnterNameProps {
 
 export class ChatPageProps {
     constructor(public username : string, public lobbyState : LobbyData, public leaveLobby : () => void,
-    public refreshData : () => void, public sendMessage : (val : string) => void) {
+    public refreshData : () => void, public sendMessage : (val : string) => void, public updateTyping : (val : boolean) => void) {
 
     }
 }

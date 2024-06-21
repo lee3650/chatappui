@@ -52,3 +52,8 @@ export const serverCreateLobby = () : Promise<string> => {
 export const serverEnterLobby = (username : string, lobbyId : string) : Promise<LobbyData> => {
     return fetchLobbyData(lobbyId); 
 }
+
+export const serverUpdateTyping = (lobbyId : string, username : string, value : boolean) => {
+
+}
+

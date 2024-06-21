@@ -4,7 +4,7 @@ import Landing from '../Landing/Landing'
 import { ChatPageProps, EnterNameProps, LandingProps } from '../Interface/Props'
 import Spinner from '../Spinner/Spinner'
 import EnterName from '../EnterName/EnterName'
-import { fetchLobbyData, serverCheckLobbyExists, serverCreateLobby, serverEnterLobby, serverPostMessage } from '../../model/api'
+import { fetchLobbyData, serverCheckLobbyExists, serverCreateLobby, serverEnterLobby, serverPostMessage, serverUpdateTyping } from '../../model/api'
 import { LobbyData } from '../../model/dto'
 import ChatPage from '../ChatPage/ChatPage'
  
@@ -54,6 +54,7 @@ const Home = () => {
     const refreshChat = () => {
         fetchLobbyData(lobbyData.id)
         .then(result => {
+            console.log(`refreshed chat: ${JSON.stringify(lobbyData)}`)
             setLobbyData(result); 
             /* We could play an SFX here if we want to */
         })
@@ -64,9 +65,14 @@ const Home = () => {
         .then(result => setLobbyData(result));
     }
 
+    const updateTyping = (value : boolean) => {
+        serverUpdateTyping(lobbyData.id, username, value); 
+    }
+
     return (loading ? (<div className={css.spinnerParent}><Spinner/></div>) : (lobbyToJoin === '' ? 
-    <Landing {... new LandingProps(joinLobby, createLobby)}></Landing> : (LobbyData.isEmpty(lobbyData) ? 
-    <EnterName {...new EnterNameProps(enterLobby, goBackFromName)}/> : <ChatPage {...new ChatPageProps(username, lobbyData, goBackFromName, refreshChat, sendMessage)}/>)))
+    <Landing {... new LandingProps(joinLobby, createLobby)}></Landing> : (LobbyData.isEmpty(lobbyData) || username === '' ? 
+    <EnterName {...new EnterNameProps(enterLobby, goBackFromName)}/> : <ChatPage {...new ChatPageProps(username, lobbyData, goBackFromName, refreshChat, 
+        sendMessage, updateTyping)}/>)))
 }
 
 export default Home

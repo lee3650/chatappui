@@ -9,16 +9,26 @@
     color: white; 
 }
 
+.spacer {
+    width: 100%; 
+    height: 35px; 
+    flex-shrink: 0;
+    flex-grow: 0;
+    background-color: #414141;
+}
+
 .container {
     max-width: 800px;
     width: 100%; 
     background-color: var(--bg-color);
     position: relative;
+    display: flex; 
+    flex-direction: column;
 }
 
 .messageBox {
     overflow-y: auto;
-    max-height: 100%;
+    flex-grow: 1;
 }
 
 .clipboard {
@@ -75,15 +85,14 @@ header strong:active {
 }
 
 .footer {
-    position: absolute; 
-    bottom: 0;
+    position: relative; 
     width: 100%; 
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     background-color: #414141;
-    padding-top: 20px;
+    padding-top: 0px;
     padding-bottom: 20px;
 }
 
@@ -110,8 +119,12 @@ header strong:active {
     margin: 0 15px 0;
 }
 
-.sendButton:active {
+.sendButton:hover {
     background-color: #555;
+}
+
+.sendButton:active {
+    background-color: #777;
     transform: translateY(-2px);
 }
 

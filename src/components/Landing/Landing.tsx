@@ -11,7 +11,7 @@ const Landing : FC<LandingProps> = ( props ) => {
     <div className={css.container}>
         <Logo/>
         <div className={css.joinParent}>
-            <input placeholder='Lobby code...' onChange={val => setLobbyCode(val.target.value)}></input>
+            <input placeholder='Lobby code...' onChange={val => setLobbyCode(val.target.value)} onKeyDown={e => {if (e.key === 'Enter') { props.joinLobby(lobbyCode); }}}></input>
             <p onClick={() => props.joinLobby(lobbyCode)}>Join Lobby</p>
         </div>
         <small>or</small>
