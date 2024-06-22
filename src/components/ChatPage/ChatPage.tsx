@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MessageBox from "./MessageBox";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
-const INTERVAL = 500; 
+const INTERVAL = 750; 
 
 const ChatPage : FC<ChatPageProps> = ( props ) => {
     const typers = props.lobbyState.senders.map(v => v.isTyping && v.name !== props.username ? v.name : null).filter(v => v !== null); 
@@ -46,7 +46,7 @@ const ChatPage : FC<ChatPageProps> = ( props ) => {
     return (<div className={css.page}>
         <div className={css.container}>
             <div className={css.header}>
-                <h1>
+                <h1 onClick={() => navigator.clipboard.writeText(props.lobbyState.id)}>
                     <FontAwesomeIcon icon={faClipboard} className={css.clipboard}/>
                     LOBBY ID: {props.lobbyState.id}
                 </h1>
