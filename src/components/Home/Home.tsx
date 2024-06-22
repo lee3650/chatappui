@@ -31,6 +31,9 @@ const Home : FC<HomePageProps> = (props) => {
             if (result) {
                 setLobbyToJoin(code); 
             }
+            else {
+                setLobbyError('Lobby does not exist!'); 
+            }
         })
         .catch(error => {
             let errorMsg = error?.response?.data?.message; 
