@@ -16,6 +16,12 @@
     justify-content: center;
 }
 
+.container .joinParent small {
+    user-select: none;
+    color: #FFAAAA; 
+    margin-top: 1em;
+}
+
 .container input {
     font-family: inherit;
     height: 1.5em; 

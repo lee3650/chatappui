@@ -15,6 +15,11 @@
     text-align: center;
 }
 
+.container small {
+    color: #dda1a1;
+    margin-top: 1em;
+}
+
 .container p {
     color: white; 
     font-weight: bold;

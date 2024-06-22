@@ -19,6 +19,7 @@ const EnterName : FC<EnterNameProps> = ( props ) => {
     return (<div className={css.container}>
         <Logo/>
         <input placeholder='Enter username' onChange={e => setUsername(e.target.value)} onKeyDown={e => {if (e.key === 'Enter') { enterLobby(); }}}></input>
+        {props.error.length > 0 ? <small>{props.error}</small> : <></>}
         <p onClick={() => enterLobby()}>Continue</p>
         <p onClick={exit}>Back</p>
     </div>); 
