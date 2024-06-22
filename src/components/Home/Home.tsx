@@ -43,6 +43,7 @@ const Home : FC<HomePageProps> = (props) => {
             else {
                 setLobbyError('An unknown error occurred');
             }
+            setLoading(false); 
         });
     }
 
@@ -103,7 +104,6 @@ const Home : FC<HomePageProps> = (props) => {
     const refreshChat = () => {
         api.fetchLobbyData(lobbyData.id)
         .then(result => {
-            console.log(`refreshed chat: ${JSON.stringify(lobbyData)}`)
             setLobbyData(result); 
             /* We could play an SFX here if we want to */
         })
