@@ -12,8 +12,6 @@ const Home : FC<HomePageProps> = (props) => {
 
     const [searchParams, _] = useSearchParams();
 
-    console.log(`got search params obj ${JSON.stringify(searchParams)}`);
-
     const [ loading, setLoading ] = useState(false); 
     const [ lobbyData, setLobbyData ] = useState<LobbyData>(LobbyData.emptyData()); 
     const [ lobbyToJoin, setLobbyToJoin ] = useState(''); 
@@ -26,12 +24,69 @@ const Home : FC<HomePageProps> = (props) => {
     useEffect(() => {
         let lobid = searchParams.get('lobby') 
         let usid = searchParams.get('user')
-        if (lobid != null && usid != null) {
-            joinLobby(lobid);
-            enterLobby(usid); 
+        if (lobid != null && lobid.length > 0 && usid != null && usid.length > 0) {
+            enterAndJoin(lobid, usid); 
         }
         console.log(`got search params: ${lobid}, ${usid}`);
     }, [ searchParams.get('lobby'), searchParams.get('user') ])
+
+    const enterAndJoin = (code : string, username : string) => {
+        if (code.length == 0)
+        {
+            setLobbyError('Please enter a lobby code');
+            return; 
+        }        
+
+        setLoading(true); 
+        api.serverCheckLobbyExists(code)
+        .then(result => { 
+            setLoading(false);
+            if (result) {
+                setLobbyToJoin(code); 
+
+                if (username.length == 0) {
+                    setNameError('Please enter a name');
+                    return;
+                }
+                if (username.length > MAX_NAME_LEN) {
+                    setNameError('Please enter a shorter name');
+                    return;
+                }
+
+                setLoading(true);
+                api.serverEnterLobby(username, code)
+                    .then(result => {
+                        setUsername(username);
+                        setLoading(false);
+                        setLobbyData(result);
+                    })
+                    .catch(error => {
+                        let errorMsg = error?.response?.data?.message;
+                        if (errorMsg) {
+                            setNameError(errorMsg);
+                        }
+                        else {
+                            setNameError('An unknown error occurred');
+                        }
+                        setLoading(false);
+                    })
+            }
+            else {
+                setLobbyError('Lobby does not exist!');
+            }
+        })
+
+            .catch(error => {
+                let errorMsg = error?.response?.data?.message;
+                if (errorMsg) {
+                setLobbyError(errorMsg);
+            }
+            else {
+                setLobbyError('An unknown error occurred');
+            }
+            setLoading(false); 
+        });
+    }
 
     const joinLobby = (code : string) => {
         if (code.length == 0)
