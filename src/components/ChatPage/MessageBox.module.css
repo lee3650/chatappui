@@ -13,3 +13,8 @@
 .container p {
     margin: 2px 0; 
 }
+
+.container b span {
+    color: #606060;
+    font-size: small;
+}

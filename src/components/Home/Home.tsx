@@ -1,13 +1,19 @@
 import css from './Home.module.css'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import Landing from '../Landing/Landing'
 import { ChatPageProps, EnterNameProps, HomePageProps, LandingProps } from '../Interface/Props'
 import Spinner from '../Spinner/Spinner'
 import EnterName from '../EnterName/EnterName'
-import { LobbyData } from '../../model/dto'
+import { LobbyData, MAX_MSG_LEN, MAX_NAME_LEN } from '../../model/dto'
 import ChatPage from '../ChatPage/ChatPage'
+import { useSearchParams } from 'react-router-dom'
  
 const Home : FC<HomePageProps> = (props) => {
+
+    const [searchParams, _] = useSearchParams();
+
+    console.log(`got search params obj ${JSON.stringify(searchParams)}`);
+
     const [ loading, setLoading ] = useState(false); 
     const [ lobbyData, setLobbyData ] = useState<LobbyData>(LobbyData.emptyData()); 
     const [ lobbyToJoin, setLobbyToJoin ] = useState(''); 
@@ -16,6 +22,16 @@ const Home : FC<HomePageProps> = (props) => {
     const [ lobbyError, setLobbyError ] = useState('');
 
     const api = props.api;
+
+    useEffect(() => {
+        let lobid = searchParams.get('lobby') 
+        let usid = searchParams.get('user')
+        if (lobid != null && usid != null) {
+            joinLobby(lobid);
+            enterLobby(usid); 
+        }
+        console.log(`got search params: ${lobid}, ${usid}`);
+    }, [ searchParams.get('lobby'), searchParams.get('user') ])
 
     const joinLobby = (code : string) => {
         if (code.length == 0)
@@ -72,6 +88,10 @@ const Home : FC<HomePageProps> = (props) => {
             setNameError('Please enter a name'); 
             return;
         }
+        if (username.length > MAX_NAME_LEN) {
+            setNameError('Please enter a shorter name'); 
+            return;
+        }
 
         setLoading(true); 
         api.serverEnterLobby(username, lobbyToJoin)
@@ -110,6 +130,9 @@ const Home : FC<HomePageProps> = (props) => {
     }
 
     const sendMessage = (msg : string) => {
+        if (msg.length > MAX_MSG_LEN) {
+            return; 
+        }
         api.serverPostMessage(lobbyData.id, username, msg)
         .then(result => setLobbyData(result));
     }

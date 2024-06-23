@@ -107,6 +107,17 @@ header strong:active {
     outline: none;
 }
 
+.footer p {
+    color: #FFAAAA; 
+    font-size: smaller;
+    position: absolute; 
+    bottom: 0; 
+    left: 50%;
+    margin: 0;
+    padding: 0;
+    transform: translateX(-50%);
+}
+
 .sendButton {
     width: 40px; 
     height: 40px; 

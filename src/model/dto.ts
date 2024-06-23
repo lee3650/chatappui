@@ -40,8 +40,12 @@ export class Message {
         hours = hours ? hours : 12; // the hour '0' should be '12'
 
         // Pad minutes with leading zero if needed
+        let minstr = minutes < 10 ? '0' + minutes : `${minutes}`;
 
         // Format the date as [H]H:MM [AM,PM] M/D/YYYY
-        return `${month}/${day}/${year}, ${hours}:${minutes} ${period}`;
+        return `${month}/${day}/${year}, ${hours}:${minstr} ${period}`;
     }
 }
+
+export const MAX_MSG_LEN = 512; 
+export const MAX_NAME_LEN = 32; 

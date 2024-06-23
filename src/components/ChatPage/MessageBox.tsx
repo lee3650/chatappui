@@ -5,7 +5,7 @@ import css from './MessageBox.module.css'
 const MessageBox : FC<Message> = ( msg ) => {
     return (<div className={css.container}>
         <b>
-            {msg.senderName}, {Message.timeString(msg)}
+            {msg.senderName} <span>{Message.timeString(msg)}</span>
         </b>
         <p>
             {msg.messageContent}

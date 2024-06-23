@@ -1,17 +1,21 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { ChatPageProps } from "../Interface/Props";
 import css from './ChatPage.module.css'; 
 import { faClipboard } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MessageBox from "./MessageBox";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { MAX_MSG_LEN } from "../../model/dto";
 
 const INTERVAL = 750; 
 
 const ChatPage : FC<ChatPageProps> = ( props ) => {
     const typers = props.lobbyState.senders.map(v => v.isTyping && v.name !== props.username ? v.name : null).filter(v => v !== null); 
 
+    const bottomPage = useRef<HTMLDivElement | null>(null); 
+
     const [message, setMessage] = useState(''); 
+    const [messageErr, setMessageErr] = useState(''); 
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -21,11 +25,24 @@ const ChatPage : FC<ChatPageProps> = ( props ) => {
         return () => { clearInterval(interval); }; 
     }, [])
 
+    useEffect(() => {
+        if (bottomPage.current)
+        {
+            bottomPage.current.scrollIntoView(); 
+        }
+    }, [ props.lobbyState.messages.length ]);
+
     const sendMessage = () => {
+        if (message.length > MAX_MSG_LEN)        
+        {
+            return; 
+        }
+
         if (message.length > 0)
         {
             props.updateTyping(false); 
             props.sendMessage(message);
+            setMessageErr(''); 
             setMessage('');
         }
     }
@@ -39,6 +56,12 @@ const ChatPage : FC<ChatPageProps> = ( props ) => {
             if (message.length === 0) {
                 props.updateTyping(true); 
             }
+        }
+        if (msg.length > MAX_MSG_LEN) {
+            setMessageErr('Message is too long!'); 
+        }
+        else {
+            setMessageErr(''); 
         }
         setMessage(msg); 
     }
@@ -55,6 +78,7 @@ const ChatPage : FC<ChatPageProps> = ( props ) => {
             </div>
             <div className={css.messageBox}>
                 {props.lobbyState.messages.sort((a, b) => a.timestamp - b.timestamp).map(v => <MessageBox {...v} key={v.messageId}></MessageBox>)}
+                <div ref={bottomPage}/>
             </div>
             <div className={css.spacer}>
             </div>
@@ -69,6 +93,7 @@ const ChatPage : FC<ChatPageProps> = ( props ) => {
                 <div className={css.loader}></div> {typers.join(', ')} {typers.length > 1 ? 'are' : 'is'} typing...
                 </div>) : 
                 (<></>)}
+                <p>{messageErr}</p>
             </div>
         </div>
     </div>); 
